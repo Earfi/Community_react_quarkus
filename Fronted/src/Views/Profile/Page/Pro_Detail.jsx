@@ -62,6 +62,14 @@ const Pro_Detail = () => {
                 <span className="text-gray-800">Chantrasriwong</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
+                <label className="block text-gray-600 font-bold">ชื่อเล่น: </label>
+                <span className="text-gray-800">Earf</span>
+            </div>
+            <div className="mb-2 flex gap-2 items-center">
+                <label className="block text-gray-600 font-bold">เพศ: </label>
+                <span className="text-gray-800">ชาย</span>
+            </div>
+            <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">อายุ: </label>
                 <span className="text-gray-800">20</span>
             </div>

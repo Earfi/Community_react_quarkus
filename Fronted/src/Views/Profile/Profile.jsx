@@ -2,14 +2,19 @@ import React, { useState } from 'react'
 import Pro_Detail from './Page/Pro_Detail';
 import Pro_Posts from './Page/Pro_Posts';
 import Pro_Products from './Page/Pro_Products';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => { 
+    const navigate = useNavigate();
     const [catagory,setCatagory] = useState("detail");
 
 
   return (
-    <div className='bg-slate-100 overflow-hidden'>  
+    <div className='bg-slate-100 overflow-hidden relative'>  
+        <p className='rotate-180 text-3xl cursor-pointer float-start absolute top-2 left-0 sm:text-2' onClick={() => navigate(-1)}>&#10145;</p>
         <div className='min-h-[100vh] h-full w-full flex flex-col gap-5 md:w-[700px] p-3 sm:p-10 bg-white mx-auto'>
+
+            <h1 className='text-center text-xl font-bold my-2'>Profile</h1>
         
             {/* mode content */}
 

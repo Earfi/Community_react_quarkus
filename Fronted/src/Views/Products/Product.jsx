@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import Items from '../../Components/Products/Items'
 import { Link } from 'react-router-dom'
+import ProductPost from './ProductPost'
 
 const Product = () => {
     const [sort,setSort] = useState("top")
+    const [openPost,setOpenPost] = useState(false)
     const [catagory,setCatagory] = useState([
         {
             "id":"1",
@@ -32,12 +34,12 @@ const Product = () => {
     ])
 
   return (
-    <div className='bg-slate-100 overflow-hidden'>  
+    <div className={`bg-slate-100 overflow-hidden relative ${openPost ? 'min-h-full' : 'h-full'}`}>  
         <div className='min-h-[100vh] h-full w-full flex flex-col gap-5 md:w-[700px] p-3 sm:p-10 bg-white mx-auto'>
 
             <Link to="/products/post">
-                <div className='relative'>
-                    <input type="text" className='w-full md:w-[600px] h-10 border rounded-md p-1' placeholder='Post your product ...'/>
+                <div onClick={() => setOpenPost(!openPost)} className='relative'>
+                    <p type="text" className='w-full md:w-[600px] h-10 border rounded-md p-1'>Post your product ...</p>
                     <img className='absolute top-2 right-3 sm:right-8 cursor-pointer w-7 h-7 object-cover shadow-2xl overflow-hidden' src="../public/img/icon/img.png" alt="img-logo" />
                 </div> 
             </Link>
@@ -63,6 +65,15 @@ const Product = () => {
             </div>
 
         </div>
+
+        {/* post Product */}
+
+        {/* <div className={`absolute hidden min-h-full w-full backdrop-blur-3xl ${openPost ? 'top-0' : 'top-[-100%]'} left-0 right-0 bottom-0 flex justify-center items-start pt-20 transition-all duration-700`}>
+            <div className='h-full w-full sm:w-[500px] bg-white px-5 pt-8 rounded-xl flex flex-col gap-2 relative'>
+                <p onClick={() => setOpenPost(!openPost)} className='absolute right-2 top-2 text-xl cursor-pointer'>&#10006;</p>
+                <ProductPost/>
+            </div>
+      </div> */}
     </div>
   )
 }

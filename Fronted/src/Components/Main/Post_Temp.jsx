@@ -45,6 +45,7 @@ const Post_Temp = () => {
               </Link>
               <p onClick={() => setPostDot(!postDot)} className='absolute right-0 top-0 font-bold cursor-pointer hover:text-gray-400'>&#9776;</p>
               <ul className={`${postDot ? 'block':'hidden'} absolute h-32 w-28 right-0 top-6 bg-slate-400 flex flex-col justify-start p-2`}>
+                <li className='cursor-pointer font-semibold hover:text-slate-300'>Edit</li> 
                 <li className='cursor-pointer font-semibold hover:text-slate-300'>Report</li> 
               </ul>
             </div>
