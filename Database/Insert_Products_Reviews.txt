@@ -1,0 +1,52 @@
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    img_path VARCHAR(255), 
+    title_cart VARCHAR(30),
+    title VARCHAR(50),
+    descriptions VARCHAR(1000),
+    category VARCHAR(20),
+    weight DECIMAL(5, 2),
+    price DECIMAL(9, 2),
+    rating DECIMAL(3, 1),
+    stock VARCHAR(6),
+    out_stock VARCHAR(6),
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    clients VARCHAR(255),
+    img_profile VARCHAR(255),
+    comments TEXT,
+    rating DECIMAL(3, 1),
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- สร้างข้อมูลในตาราง products
+INSERT INTO products (img_path, title_cart, title, descriptions, category, weight, price, rating, stock, out_stock, user_id) VALUES
+(null, 'ผลไม้ขวด', 'สัปปะรดคัดแล้ว จากดวงจันทร์', 'อุดมไปด้วยแร่ธาตุนับหมื่นชนิด กินแล้ว... ร่างกายสดชื่น !!!', 'ผลไม้', 1.5, 500.00, 4.8, '50', '9,726', 7),
+(null, 'กล้วยหอม', 'กล้วยหอมจากสวนในสวน', 'กล้วยหอมหวานกรอบเนื้อนิ่ม ที่คุณสามารถเลือกได้อย่างมั่นใจว่าจะเป็นตัวที่ดีที่สุดในท้องตลาดกล้วยของไทย คัดสรรมาจากสวนในสวน และเลือกเฉพาะกล้วยที่มีคุณภาพเยี่ยม', 'ผลไม้', 1.2, 600.00, 4.5, '80', '8,500', 7),
+(null, 'เงาะ', 'เงาะที่สุกกำลังพร้อมสุขภาพ', 'เงาะหอมกรอบที่มาพร้อมกับคุณค่าทางโภชนาการและรสชาติที่หวานอมเปรี้ยว เหมาะสำหรับผู้ที่ต้องการสุขภาพดี', 'ผลไม้', 1.8, 450.00, 4.7, '60', '7,200', 9),
+(null, 'มะม่วง', 'มะม่วงหอม จากสวนส่งผล', 'มะม่วงหอมที่แท้ทรู กินแล้วอิ่ม หอมหวานที่สุดในโลก', 'ผลไม้', 1.6, 700.00, 4.9, '40', '6,300', 8),
+(null, 'แตงโม', 'แตงโมสุกสดใหม่จากสวนส่งผล', 'แตงโมสุกกรอบ มีน้ำตาลที่สุกๆเพิ่มความหวานเปรี้ยว ชื่อเสียงด้านคุณภาพต้องที่นี่เลย', 'ผลไม้', 2.0, 400.00, 4.6, '70', '5,800', 10);
+
+-- สร้างข้อมูลในตาราง reviews
+INSERT INTO reviews (product_id, clients, img_profile, comments, rating,user_id) VALUES
+(1, 'User', null, 'สินค้าดีมาก อร่อย', 5.0,8),
+(1, 'Admin', null, 'เค็ม ขอข้าวหน่อย', 5.0,7),
+(1, 'User', null, 'ดีเยื่ยม เอาไป 3 ดาว', 4.0,8),
+(2, 'User', null, 'หวานเข้มมาก ชอบมาก', 4.0,8),
+(2, 'User', null, 'หวานดี ที่สุดในโลก', 5.0,8),
+(3, 'User', null, 'เย็นสดชื่น ให้กำลังใจทุกวัน', 4.0,8),
+(3, 'User', null, 'หอมอร่อยมากๆ', 4.0,8),
+(4, 'User', null, 'คุ้มค่ามาก หวานจัดเต็ม', 4.0,8),
+(4, 'User', null, 'ดีใจที่ได้ซื้อมะม่วงนี้', 4.0,8),
+(5, 'User', null, 'น้ำที่สดชื่นมาก ต้องลอง', 4.0,8),
+(5, 'User', null, 'อร่อยมากๆ แนะนำ', 4.0,8);
+

@@ -1,0 +1,66 @@
+
+{ 
+    "username": "Admin",
+    "password": "admin",
+    "firstName": "John",
+    "lastName": "Doe",
+    "nickName": "JD",
+    "gender": "Male",
+    "age": 25,
+    "birthdate": "1999-06-27",
+    "email": "john@example.com",
+    "github": "johndoe",
+    "phone": "1234567890",
+    "address": "123 Main St, City",
+    "roles": "Admin",
+    "profile": "profile_image.jpg"
+}
+{ 
+    "username": "User",
+    "password": "user",
+    "firstName": "Somchay",
+    "lastName": "Jaidee",
+    "nickName": "Chay",
+    "gender": "Male",
+    "age": 46,
+    "birthdate": "1999-06-27",
+    "email": "somchay@example.com",
+    "github": "somchay",
+    "phone": "1234567890",
+    "address": "123 Main St, City",
+    "roles": "User",
+    "profile": "profile_image.jpg"
+}
+{ 
+    "username": "Earf",
+    "password": "earf",
+    "firstName": "Pichaya",
+    "lastName": "Chantrasriwong",
+    "nickName": "Earf",
+    "gender": "Male",
+    "age": 20,
+    "birthdate": "1999-06-27",
+    "email": "pichaya.chan@kmutt.ac.th",
+    "github": "Earfi",
+    "phone": "1234567890",
+    "address": "123 Main St, City",
+    "roles": "Admin",
+    "profile": "profile_image.jpg"
+}
+{ 
+    "username": "Maria",
+    "password": "maria",
+    "firstName": "Maria",
+    "lastName": "King",
+    "nickName": "Kate",
+    "gender": "feMale",
+    "age": 26,
+    "birthdate": "1999-06-27",
+    "email": "maria.king@gmail.com",
+    "github": "maria",
+    "phone": "1234567890",
+    "address": "123 Main St, City",
+    "roles": "User",
+    "profile": "profile_image.jpg"
+}
+

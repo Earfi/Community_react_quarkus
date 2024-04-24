@@ -1,0 +1,28 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    nickname VARCHAR(255), 
+    gender VARCHAR(10),
+    age INT,
+    birthdate VARCHAR(10),
+    email VARCHAR(255),
+    github VARCHAR(255),
+    phone_number VARCHAR(20),
+    address VARCHAR(255),
+    roles VARCHAR(255),
+    profile_image_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, password, first_name, last_name, nickname, gender, age, birthdate, email, github, phone_number, address, roles, profile_image_path) VALUES
+('Admin', 'admin', 'John', 'Doe', 'JD', 'Male', 25, '1999-05-15', 'john@example.com', 'johndoe', '1234567890', '123 Main St, City', 'Admin', null),
+('User', 'user', 'Jane', 'Smith', 'JS', 'Female', 30, '1994-10-20', 'jane@example.com', 'janesmith', '0987654321', '456 Elm St, Town', 'User', null),
+('Earf', 'Admin', 'Michael', 'Johnson', 'MJ', 'Male', 28, '1996-03-25', 'michael@example.com', 'michaeljohnson', '1357924680', '789 Oak St, Village', 'Admin', null),
+('Alice', 'user', 'Emily', 'Williams', 'EW', 'Female', 35, '1991-08-10', 'emily@example.com', 'emilywilliams', '2468013579', '987 Pine St, Country', 'User', null),
+('Maria', 'user', 'Daniel', 'Brown', 'DB', 'Male', 22, '2002-01-05', 'daniel@example.com', 'danielbrown', '3692581470', '654 Maple St, Suburb', 'User', null);
+
+select * from users;
