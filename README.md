@@ -24,8 +24,15 @@ This project integrates React frontend with Quarkus backend to create a communit
   - Create product
   - Delete product
   <!-- - Update product -->
+- Post API:
+  - List all post
+  - Get post by ID
+  - Create post
+  - Delete post
 
 ## Getting Started
+
+### Database (Mysql)
 
 To run the application locally, follow these steps:
 
