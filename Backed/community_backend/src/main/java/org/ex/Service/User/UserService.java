@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.ex.Dto.User.CreateUserDTO;
+import org.ex.Dto.User.InfoCardUserDto;
 import org.ex.Dto.User.ListAllUserDTO;
 import org.ex.Model.User.User;
 import org.ex.Repository.User.UserRepository;
@@ -134,6 +135,43 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public long countUsers() {
+        return repository.count();
+    }
+
+//    public List<Object[]> findInfoCardUserById(Integer id) {
+//        return repository.findInfoCardUserById(id);
+//    }
+//
+//    public List<Object[]> findInfoCard10User() {
+//        return repository.findInfoCard10User();
+//    }
+
+    public InfoCardUserDto InfoCardUser(Integer id) {
+        User user = repository.findById(id);
+        if (user != null) {
+            return convertToInfoCartDTO(user);
+        }
+        return null;
+    }
+
+    public List<InfoCardUserDto> InfoCardAllUser() {
+        List<User> users = repository.listAll();
+        return users.stream()
+                .map(this::convertToInfoCartDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    private InfoCardUserDto convertToInfoCartDTO(User user) {
+        return new InfoCardUserDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getProfile()
+        );
     }
 
 }

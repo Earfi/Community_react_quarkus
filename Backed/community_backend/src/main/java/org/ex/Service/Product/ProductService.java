@@ -21,8 +21,8 @@ public class ProductService {
     ProductRepository repository;
 
     public List<ListAllProductDTO> getAllProducts() {
-        List<Product> users = repository.listAll();
-        return users.stream()
+        List<Product> product = repository.listAll();
+        return product.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

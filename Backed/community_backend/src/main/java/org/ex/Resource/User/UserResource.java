@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.ex.Dto.User.CreateUserDTO;
+import org.ex.Dto.User.InfoCardUserDto;
 import org.ex.Dto.User.ListAllUserDTO;
 import org.ex.Service.User.UserService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
@@ -33,14 +34,15 @@ public class UserResource {
     UserService service;
 
     @GET
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Admin","User"})
+//    @RolesAllowed({"Admin"})
     public List<ListAllUserDTO> getAllUsers() {
         return service.getAllUsers();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Admin","User"})
     public Response getUserById(@PathParam("id") Integer id){
         ListAllUserDTO user = service.getUserById(id);
         return Response.ok(user).build();
@@ -125,7 +127,8 @@ public class UserResource {
 
     @GET
     @Path("/{userId}/profile")
-    @RolesAllowed({"Admin","User"})
+//    @RolesAllowed({"Admin","User"})
+    @PermitAll
     @Produces("image/jpeg")
     public Response getProfileImage(@PathParam("userId") Integer userId) {
         ListAllUserDTO user = service.getUserById(userId);
@@ -140,5 +143,23 @@ public class UserResource {
         Response.ResponseBuilder responseBuilder = Response.ok(imageFile);
         responseBuilder.type("image/jpeg");
         return responseBuilder.build();
+    }
+
+    @GET
+    @Path("/count")
+    public long countUsers() {
+        return service.countUsers();
+    }
+
+    @GET
+    @Path("/card/info")
+    public List<InfoCardUserDto> InfoCardAllUser() {
+        return service.InfoCardAllUser();
+    }
+
+    @GET
+    @Path("/card/info/{id}")
+    public InfoCardUserDto InfoCardUser(@PathParam("id") Integer id) {
+        return service.InfoCardUser(id);
     }
 }

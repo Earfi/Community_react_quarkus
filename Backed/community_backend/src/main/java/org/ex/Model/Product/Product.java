@@ -40,7 +40,7 @@ public class Product extends PanacheEntityBase {
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
-@Column(name = "user_id")
+    @Column(name = "user_id")
     private Integer userId;
 
     public Integer getId() {
