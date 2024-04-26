@@ -6,7 +6,7 @@ const ProductPost = () => {
   const [productData, setProductData] = useState({
     title_cart: '',
     title: '',
-    description: '',
+    descriptions: '',
     img: '',
     category: '',
     weight: '',
@@ -30,10 +30,10 @@ const ProductPost = () => {
   };
 
   return (
-    <div className='bg-slate-100 overflow-hidden relative'>  
+    <div className='bg-slate-100 overflow-hidden relative h-screen overflow-y-auto'>  
       <p className='rotate-180 text-3xl cursor-pointer float-start absolute top-2 left-0 sm:text-2' onClick={() => navigate(-1)}>&#10145;</p>
-      <div className='min-h-[100vh] h-full w-full flex flex-col gap-5 md:w-[700px] p-3 sm:p-10 bg-white mx-auto'>
-        <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className=' h-full overflow-y-auto w-full flex flex-col gap-5 p-3 sm:p-10 bg-white mx-auto'>
+        <div className="w-full h-fit flex flex-col items-center justify-center">
           <h1 className="text-center text-md font-semibold mb-6">Add Product</h1>
           <form className="w-full max-w-lg">
             <div className="mb-4">
@@ -45,11 +45,11 @@ const ProductPost = () => {
               <input type="text" name="title" id="title" value={productData.title} onChange={handleChange} placeholder='ชื่อสินค้า' className="p-1 h-10 border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required/>
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <label htmlFor="descriptions" className="block text-sm font-medium text-gray-700">Description</label>
               <textarea 
-                name="description" 
-                id="description" 
-                value={productData.description} 
+                name="descriptions" 
+                id="descriptions" 
+                value={productData.descriptions} 
                 onChange={handleChange} 
                 placeholder='รายละเอียดสินค้า'
                 className="p-1 h-96 border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md resize-y"

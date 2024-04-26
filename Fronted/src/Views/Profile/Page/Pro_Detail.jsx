@@ -1,10 +1,74 @@
-import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react'
+import Swal from 'sweetalert2'
+import { Link, useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import getUserProfile from '../../../Function/UserProfile';
 
 const Pro_Detail = () => {
-    const inputRef = useRef(null);
+    const navigate = useNavigate();
+    const inputRef = useRef(null); 
     const [image, setImage] = useState(null);
+
+    // User Detail
     const [profile, setProfile] = useState(null);
+    const [info, setInfo] = useState([]);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const getUserById = async (id) => {
+            try {
+                const res = await fetch(`http://localhost:8080/user/${id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }); 
+
+                if (res.status === 401) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops... Session does Exits!!",
+                        text: "Please Login!!!",
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("role");
+                            navigate("/login");
+                        }
+                    });
+                }
+                const data = await res.json();
+                setInfo(data); 
+
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+      
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            getUserById(decodedToken.userId);
+        } 
+           
+    }, []);
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const token = localStorage.getItem("token"); 
+                if (token) { 
+                    const decodedToken = jwtDecode(token);
+                    const userProfile = await getUserProfile(decodedToken.userId);
+                    setProfile(userProfile);
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
+        
+        fetchUserProfile();
+    }, []);
 
     const handleImageClick = () => {
         inputRef.current.click();
@@ -12,6 +76,24 @@ const Pro_Detail = () => {
 
     const handleImageChange = (event) => {
         setImage(event.target.files[0]);
+    };
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("username");
+    
+        Swal.fire({
+          title: "Logout successfully",
+          text: "Bye Bye!!!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload();
+        }, 1100);
     };
 
   return (
@@ -55,47 +137,47 @@ const Pro_Detail = () => {
         <div className="w-full h-full p-5 bg-gray-100 border my-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">ชื่อ: </label>
-                <span className="text-gray-800">Pichaya</span>
+                <span className="text-gray-800">{info.firstName}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">นามสกุล: </label>
-                <span className="text-gray-800">Chantrasriwong</span>
+                <span className="text-gray-800">{info.lastName}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">ชื่อเล่น: </label>
-                <span className="text-gray-800">Earf</span>
+                <span className="text-gray-800">{info.nickName}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">เพศ: </label>
-                <span className="text-gray-800">ชาย</span>
+                <span className="text-gray-800">{info.gender}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">อายุ: </label>
-                <span className="text-gray-800">20</span>
+                <span className="text-gray-800">{info.age}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">วันเกิด: </label>
-                <span className="text-gray-800">27/06/2546</span>
+                <span className="text-gray-800">{info.birthdate}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">อีเมล: </label>
-                <span className="text-gray-800">pichaya8442@gmail.com</span>
+                <span className="text-gray-800">{info.email}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">กิตฮับ: </label>
-                <span className="text-gray-800">Earfi</span>
+                <span className="text-gray-800">{info.github}</span>
             </div>
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">เบอร์โทร: </label>
-                <span className="text-gray-800">082214XXXX</span>
+                <span className="text-gray-800">{info.phone}</span>
             </div>
         </div>
         <div className="w-full h-full p-5 bg-gray-100 border my-2 grid grid-cols-1 gap-3">
             <div className="mb-2 flex gap-2 items-center">
                 <label className="block text-gray-600 font-bold">ที่อยู่: </label>
-                <span className="text-gray-800">address</span>
+                <span className="text-gray-800">{info.address}</span>
             </div>
-            <Link to="/" className={`text-white border-2 p-2 bg-red-500 hover:bg-red-800 w-[100px] mx-auto text-center cursor-pointer text-xs`}>
+            <Link to="/" onClick={logout} className={`text-white border-2 p-2 bg-red-500 hover:bg-red-800 w-[100px] mx-auto text-center cursor-pointer text-xs`}>
                 LOGOUT
             </Link>
         </div>

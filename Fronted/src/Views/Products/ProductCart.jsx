@@ -2,8 +2,8 @@ import React from 'react'
 
 const ProductCart = () => {
   return (
-    <div className='bg-slate-100 overflow-hidden'>  
-        <div className='min-h-[100vh] h-full w-full flex flex-col gap-5 md:w-[700px] p-3 sm:p-10 bg-white mx-auto'>
+    <div className={`w-full bg-slate-100 overflow-y-auto relative h-screen border pb-16`}>  
+      <div className='h-full w-full overflow-y-auto bg-white flex flex-col gap-5 p-3 sm:p-10 mx-auto'>
             <div className="w-full h-full bg-white">
                 <div className="h-full mx-auto"> 
                     <div className="flex justify-around items-center pb-5">
