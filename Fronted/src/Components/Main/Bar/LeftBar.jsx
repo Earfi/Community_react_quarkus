@@ -1,36 +1,34 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"; 
+import FetchPostPopular from "../../../Function/Post/FetchPostPopular";
 
 function LeftBar() { 
-    const [data,setData] = useState([
-        {
-            "id":1,
-            "username":"Pichaya Chantrasriwong",
-            "title":"I want money $$",
-            "img":"../../../../public/img/profile/profile1.jpg"
-        },
-        {
-            "id":2,
-            "username":"Somchai Jaidee",
-            "title":"My new car!!",
-            "img":"../../../../public/img/profile/profile2.jpg"
-        },
-        {
-            "id":3,
-            "username":"Sompong Thongdee",
-            "title":"Miss you >_<",
-            "img":"../../../../public/img/profile/profile3.jpg"
-        },
-        {
-            "id":4,
-            "username":"Lomphong Manee",
-            "title":"Eiei",
-            "img":"../../../../public/img/profile/profile4.jpg"
-        },
-    ])
+    const [data,setData] = useState([])
+    
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const posts = await FetchPostPopular();
+            
+            setData(posts); 
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        }; 
+            fetchData(); 
+  
+      }, []);
 
+    const shortenText = (text) => {
+        if (text.length <= 15) {
+            return text;
+        } else {
+            return text.substring(0, 15) + '...';
+        }
+    }
+
+    
     return (
-        <div className="w-full h-screen overflow-y-auto shadow-2xl border relative"> 
+        <div className="w-full h-screen overflow-y-auto shadow-2xl border relative bg-white"> 
             <div className="h-fit w-full overflow-y-auto flex flex-col justify-start gap-5 pb-20">
                 
                 <div className="w-full xl:w-[80%] p-2 mx-auto">    
@@ -39,10 +37,14 @@ function LeftBar() {
                         {data.map((i,index) => (
                             <div key={i.id} className="w-full h-20 p-3 bg-gray-200 flex justify-between items-center overflow-hidden">
                                 <div>
-                                    <h1 className="text-xs font-semibold">{i.username}</h1>
-                                    <p className="text-sm font-bold text-red-500">{i.title}</p>
+                                    <h1 className="text-xs font-semibold">{i.fullName}</h1>
+                                    <p className="text-sm font-bold text-red-500">{shortenText(i.title)}</p>
                                 </div>
-                                <img className="w-16 h-16 object-cover" src={i.img} alt="" />
+                                {i.imageUrl ? (
+                                            <img className="w-16 h-16 object-cover" src={i.imageUrl} alt="imgPost" />
+                                        ) : (
+                                            <></>
+                                )}
                             </div>
                         ))}
                     </div>

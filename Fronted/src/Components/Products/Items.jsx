@@ -39,7 +39,7 @@ const Items = () => {
   return (
     <>
       {detail.map((i, index) => (
-        <Link key={i.id} to="/products/detail">
+        <Link key={i.id} to={`/products/detail/${i.id}`}>
           <div className="bg-white w-36 h-52 overflow-hidden flex flex-col gap-1 p-2 border rounded-md shadow-md">
               <div className="w-[100%] h-[100px] overflow-hidden mx-auto bg-white object-center">  
                   <img src={i.img} className="object-cover w-full h-full shadow-sm"/>

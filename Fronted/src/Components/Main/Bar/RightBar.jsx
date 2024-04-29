@@ -1,29 +1,25 @@
 import { useEffect, useState } from "react";
 import FindInfoCard10User from "../../../Function/FindInfoCard10User";
-import FetchUserProfileNoLogin from "../../../Function/FetchUserProfileNoLogin";
 
 function RightBar() {
     const [data,setData] = useState([])
-    const [profiles,setProfiles] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const users = await FindInfoCard10User();
-                setData(users);
-                const promises = users.map(user => FetchUserProfileNoLogin(user.id));
-                const profiles = await Promise.all(promises);
-                setProfiles(profiles);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
+                    setData(users);
+                    
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
+             
+            fetchData(); 
     }, []);
 
     return (
-        <div className="w-full h-screen overflow-y-auto shadow-2xl border relative"> 
+        <div className="w-full h-screen overflow-y-auto shadow-2xl border relative bg-white"> 
             <div className="h-fitw w-full overflow-y-auto flex flex-col justify-start gap-10">
                 <div className="w-full xl:w-[80%] h-[350px] p-2 mx-auto">
                     <h1 className="text-md font-medium pb-2">Other People</h1>
@@ -32,8 +28,8 @@ function RightBar() {
                             {data.map((i,index) => (
                                 <div key={index} className="w-full h-14 p-3 bg-gray-200 flex justify-start gap-5 items-center overflow-hidden">
                                     <div className="relative">
-                                        {profiles[index] ? (
-                                            <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src={profiles[index]} alt="profile" />
+                                        {i.profile ? (
+                                            <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src={i.profile} alt="profile" />
                                         ) : (
                                             <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src="../../../../public/img/profile/profile-icon.png" alt="profile" />
                                         )}
@@ -54,8 +50,8 @@ function RightBar() {
                                 <div key={index} className="w-full h-14 p-3 bg-gray-200 flex overflow-hidden">
                                     <div key={index} className="w-[80%] h-full flex gap-1 items-center "> 
                                             <div className="relative">
-                                                {profiles[index] ? (
-                                                    <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src={profiles[index]} alt="profile" />
+                                                {i.profile ? (
+                                                    <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src={i.profile} alt="profile" />
                                                 ) : (
                                                     <img className="w-10 h-10 rounded-full object-cover border shadow-md overflow-hidden" src="../../../../public/img/profile/profile-icon.png" alt="profile" />
                                                 )}

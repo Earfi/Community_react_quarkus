@@ -5,15 +5,15 @@ import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class PostImageUploadForm {
-    @FormParam("file")
+    @FormParam("image")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    public byte[] file;
+    public byte[] image;
 
     public byte[] getFile() {
-        return file;
+        return image;
     }
 
-    public void setFile(byte[] file) {
-        this.file = file;
+    public void setFile(byte[] image) {
+        this.image = image;
     }
 }

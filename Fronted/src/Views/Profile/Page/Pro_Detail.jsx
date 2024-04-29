@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import getUserProfile from '../../../Function/UserProfile';
+import FetchUserById from '../../../Function/FetchUserById';
 
 const Pro_Detail = () => {
     const navigate = useNavigate();
+    const {id} = useParams();
     const inputRef = useRef(null); 
     const [image, setImage] = useState(null);
 
@@ -16,59 +17,27 @@ const Pro_Detail = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        const getUserById = async (id) => {
-            try {
-                const res = await fetch(`http://localhost:8080/user/${id}`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }); 
-
-                if (res.status === 401) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops... Session does Exits!!",
-                        text: "Please Login!!!",
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            localStorage.removeItem("token");
-                            localStorage.removeItem("role");
-                            navigate("/login");
-                        }
-                    });
-                }
-                const data = await res.json();
-                setInfo(data); 
-
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
+        const fetchData = async (id) => {
+          try {
+            const data = await FetchUserById(id);
+            setInfo(data); 
+            setProfile(data.profile);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
         };
-      
+
+        if(id){
+            fetchData(id);
+            return
+        }
         if (token) {
             const decodedToken = jwtDecode(token);
-            getUserById(decodedToken.userId);
-        } 
-           
-    }, []);
-
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const token = localStorage.getItem("token"); 
-                if (token) { 
-                    const decodedToken = jwtDecode(token);
-                    const userProfile = await getUserProfile(decodedToken.userId);
-                    setProfile(userProfile);
-                }
-            } catch (error) {
-                console.error("Error fetching user profile:", error);
-            }
-        };
-        
-        fetchUserProfile();
-    }, []);
+            fetchData(decodedToken.userId);
+            return
+        }
+  
+      }, []);
 
     const handleImageClick = () => {
         inputRef.current.click();
@@ -177,9 +146,9 @@ const Pro_Detail = () => {
                 <label className="block text-gray-600 font-bold">ที่อยู่: </label>
                 <span className="text-gray-800">{info.address}</span>
             </div>
-            <Link to="/" onClick={logout} className={`text-white border-2 p-2 bg-red-500 hover:bg-red-800 w-[100px] mx-auto text-center cursor-pointer text-xs`}>
+            {/* <Link to="/" onClick={logout} className={`text-white border-2 p-2 bg-red-500 hover:bg-red-800 w-[100px] mx-auto text-center cursor-pointer text-xs`}>
                 LOGOUT
-            </Link>
+            </Link> */}
         </div>
     </div>
   )

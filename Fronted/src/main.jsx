@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     path: "/",
     element: 
       ( 
-        <div className='h-screen w-screen overflow-hidden'>
+        <div className='h-screen w-screen overflow-hidden '>
           <Navbar/>
           <div className='flex pt-1 w-full'> 
             <div className='w-[25%] hidden md:block'>
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
       ),
   },
   {
-    path: "/products/detail",
+    path: "/products/detail/:id",
     element: 
       ( 
         <div className='h-screen w-screen overflow-hidden'>
@@ -146,6 +146,28 @@ const router = createBrowserRouter([
   // Profile
   {
     path: "/profile",
+    element: 
+      ( 
+        <div className='h-screen w-screen overflow-hidden'>
+          <Navbar/>
+          <div className='flex pt-1 w-full'> 
+            <div className='w-[25%] hidden md:block'>
+              <PLeftBar/> 
+            </div>
+            <div className="w-screen md:w-[50%]">
+              <Profile /> 
+            </div>
+            <div className='w-[25%] hidden md:block'>
+              <PRightBar/> 
+            </div>
+          </div>
+        </div>
+      ),
+  },
+  
+  // Profile Id
+  {
+    path: "/profile/:id",
     element: 
       ( 
         <div className='h-screen w-screen overflow-hidden'>

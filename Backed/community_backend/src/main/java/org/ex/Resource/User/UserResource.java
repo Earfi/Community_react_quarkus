@@ -42,7 +42,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Admin","User"})
+//    @RolesAllowed({"Admin","User"})
     public Response getUserById(@PathParam("id") Integer id){
         ListAllUserDTO user = service.getUserById(id);
         return Response.ok(user).build();

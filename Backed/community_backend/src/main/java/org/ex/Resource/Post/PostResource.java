@@ -4,6 +4,8 @@ import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +15,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.ex.Dto.Post.CreatePostDTO;
 import org.ex.Dto.Post.ListAllPostDTO;
 import org.ex.Dto.User.ListAllUserDTO;
+import org.ex.Model.Posts;
 import org.ex.Resource.User.ProfileImageUploadForm;
 import org.ex.Service.Post.PostService;
 import org.ex.Service.User.UserService;
@@ -20,8 +23,11 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Path("/posts")
@@ -45,6 +51,20 @@ public class PostResource {
     }
 
     @GET
+    @Path("all/{id}")
+    @PermitAll
+    public List<ListAllPostDTO> getPostsByUserId(@PathParam("id") Integer id) {
+        return service.getPostsByUserId(id);
+    }
+
+    @GET
+    @Path("/popular")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ListAllPostDTO> getPopularPosts() {
+        return service.get4PostsPopular();
+    }
+
+    @GET
     @Path("/{id}")
     @PermitAll
     public Response getPostById(@PathParam("id") Integer id){
@@ -55,9 +75,41 @@ public class PostResource {
     @POST
     @Path("/{user_id}/create")
     @RolesAllowed({"Admin","User"})
-    public Response createUser(CreatePostDTO dto,@PathParam("user_id") Integer id){
-        ListAllPostDTO post = service.createPost(dto,id);
-        return Response.ok(post).status(201).build();
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createPostWithImage(
+            @PathParam("user_id") Integer id,
+            @MultipartForm PostImageAndDataForm formData) {
+        try {
+            String imagePath = savePostImage(formData.getFile(), id);
+
+            CreatePostDTO dto = new CreatePostDTO();
+            dto.setTitle(formData.getTitle());
+            dto.setImgPath(imagePath);
+
+            ListAllPostDTO post = service.createPost(dto, id);
+
+            return Response.ok(post).status(201).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.serverError().entity("Failed to create post").build();
+        }
+    }
+
+    private String savePostImage(File file, Integer userId) throws IOException {
+        if (file == null || file.length() == 0) {
+            throw new IllegalArgumentException("File is empty");
+        }
+
+        String directoryPath = uploadDir + File.separator + userId;
+        if (!Files.exists(Paths.get(directoryPath))) {
+            Files.createDirectories(Paths.get(directoryPath));
+        }
+        String fileName = file.getName();
+        String imagePath = directoryPath + File.separator + fileName;
+
+        Files.copy(file.toPath(), Paths.get(imagePath));
+
+        return imagePath;
     }
 
     @POST
@@ -66,7 +118,7 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"Admin","User"})
     @Transactional
-    public Response uploadProfileImage(
+    public Response uploadPostImage(
             @PathParam("postId") Integer postId,
             @PathParam("userId") Integer userId,
             @MultipartForm PostImageUploadForm form
@@ -110,23 +162,50 @@ public class PostResource {
     }
 
     @GET
-    @Path("/{postId}/img")
-    @PermitAll
+    @Path("/{post_id}/img")
     @Produces("image/jpeg")
-    public Response getProfileImage(@PathParam("postId") Integer postId) {
-        ListAllPostDTO post = service.getPostById(postId);
+    public Response getImageByPostId(@PathParam("post_id") Integer postId) {
+        Posts postEntity = Posts.findById(postId);
+        if (postEntity == null || postEntity.getImgPath() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
-        String imagePath = post.getImgPath();
+        File imageFile = new File(postEntity.getImgPath());
 
-        File imageFile = new File(imagePath);
         if (!imageFile.exists()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        Response.ResponseBuilder responseBuilder = Response.ok(imageFile);
-        responseBuilder.type("image/jpeg");
-        return responseBuilder.build();
+        byte[] imageData;
+        try {
+            imageData = Files.readAllBytes(imageFile.toPath());
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return Response.ok(imageData).build();
     }
+
+
+
+//    @GET
+//    @Path("/{postId}/img")
+//    @PermitAll
+//    @Produces("image/jpeg")
+//    public Response getPostImage(@PathParam("postId") Integer postId) {
+//        ListAllPostDTO post = service.getPostById(postId);
+//
+//        String imagePath = post.getImgPath();
+//
+//        File imageFile = new File(imagePath);
+//        if (!imageFile.exists()) {
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        }
+//
+//        Response.ResponseBuilder responseBuilder = Response.ok(imageFile);
+//        responseBuilder.type("image/jpeg");
+//        return responseBuilder.build();
+//    }
 
     @DELETE
     @RolesAllowed({"Admin","User"})

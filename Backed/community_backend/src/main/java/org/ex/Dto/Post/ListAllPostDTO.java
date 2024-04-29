@@ -18,7 +18,7 @@ public class ListAllPostDTO {
     private String profile;
     private UserInfo userInfo;
 
-    public ListAllPostDTO(Integer id, String title, String imgPath, Integer likes, Integer comments, Integer shares, Integer userId, LocalDateTime create, LocalDateTime update) {
+    public ListAllPostDTO(Integer id, String title , String imgPath , Integer likes, Integer comments, Integer shares, Integer userId, LocalDateTime create, LocalDateTime update) {
         this.id = id;
         this.title = title;
         this.imgPath = imgPath;
@@ -30,7 +30,7 @@ public class ListAllPostDTO {
         this.update = update;
     }
 
-    public ListAllPostDTO(Integer id, String title, String imgPath, Integer likes, Integer comments, Integer shares, LocalDateTime update, LocalDateTime create, UserInfo userInfo) {
+    public ListAllPostDTO(Integer id, String title , String imgPath  , Integer likes, Integer comments, Integer shares, LocalDateTime update, LocalDateTime create, UserInfo userInfo) {
         this.id = id;
         this.title = title;
         this.imgPath = imgPath;
@@ -42,7 +42,7 @@ public class ListAllPostDTO {
         this.userInfo =userInfo;
     }
 
-    public ListAllPostDTO(Integer id, String title, String imgPath, Integer likes, Integer comments, Integer shares, LocalDateTime create, LocalDateTime update, Integer User_id, String fullName, String profile) {
+    public ListAllPostDTO(Integer id, String title  , String imgPath , Integer likes, Integer comments, Integer shares, LocalDateTime create, LocalDateTime update, Integer User_id, String fullName, String profile) {
         this.id = id;
         this.title = title;
         this.imgPath = imgPath;

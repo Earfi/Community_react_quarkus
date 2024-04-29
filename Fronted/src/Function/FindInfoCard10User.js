@@ -1,3 +1,5 @@
+import FetchUserProfileNoLogin from "./FetchUserProfileNoLogin";
+
 const FindInfoCard10User = async () => {
     try {
       const res = await fetch(
@@ -8,7 +10,18 @@ const FindInfoCard10User = async () => {
       ); 
       if (res.status == 200) {
         const data = await res.json(); 
-        return data;
+
+        const promises = data.map(user => FetchUserProfileNoLogin(user.id));
+        const profiles = await Promise.all(promises);
+
+        const postsWithData = data.map((post, index) => {
+          return {
+            ...post,
+            profile: profiles[index] 
+          };
+        });
+
+        return postsWithData;
       }
     } catch (error) {
       console.error("Error fetching user cart data:", error);
